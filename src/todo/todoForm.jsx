@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { changeDescription, search, add } from '../redux/action/main'
+import { changeDescription, search, add, clear } from '../redux/action/main'
 import Grid from '../template/grid'
 import IconButton from '../template/iconButton'
 
@@ -13,12 +13,12 @@ class TodoForm extends PureComponent {
     }
 
     keyHandler(e) {
-        const { add, search, description } = this.props
+        const { add, search, description, clear } = this.props
 
         if (e.key === 'Enter') {
             e.shiftKey ? search() : add(description)
         } else if (e.key === 'Escape') {
-            props.handleClear()
+            clear()
         }
     }
 
@@ -28,7 +28,7 @@ class TodoForm extends PureComponent {
 
     render() {
         const { add, search, description } = this.props
-        
+
         return (
             <div role='form' className='todoForm'>
                 <Grid cols='12 9 10'>
@@ -42,9 +42,9 @@ class TodoForm extends PureComponent {
                     <IconButton style='primary' icon='plus'
                         onClick={() => add(description)}></IconButton>
                     <IconButton style='info' icon='search'
-                        onClick={() => search()}></IconButton>
+                        onClick={search}></IconButton>
                     <IconButton style='default' icon='close'
-                        onClick={this.props.handleClear}></IconButton>
+                        onClick={this.props.clear}></IconButton>
                 </Grid>
             </div>
         )
@@ -55,6 +55,6 @@ class TodoForm extends PureComponent {
 const mapStateToProps = state => ({ description: state.todo.description })
 
 const mapDispatchToProps =
-    dispatch => bindActionCreators({ changeDescription, search, add }, dispatch)
+    dispatch => bindActionCreators({ changeDescription, search, add, clear }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoForm)
